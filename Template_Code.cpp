@@ -30,13 +30,22 @@ private:
     int severity;
 
 public:
-    EmergencyCase(int pid, int s);
+    EmergencyCase(int pid, int s){
+        patientId = pid;
+        severity = s;
+    }
 
-    int getPatientId() const;
-    int getSeverity() const;
+    int getPatientId() const{
+        return patientId;
+    }
+    int getSeverity() const{
+        return severity;
+    }
 
     // Higher severity = higher priority
-    bool operator<(const EmergencyCase& other) const;
+    bool operator<(const EmergencyCase& other) const{
+        return this -> getSeverity() < other.getSeverity();
+    }
 };
 
 
