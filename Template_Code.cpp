@@ -200,11 +200,20 @@ public:
         RoomType type
     );
 
-    void addEmergency(
-        int patientId
-    );
+    void addEmergency(int patientId){
+        emergencyQueue.push(patientId);
+    }
 
-    int handleEmergency();
+    int handleEmergency(){
+        if(emergencyQueue.empty()){
+            cout << "No emergencies in queue" << endl;
+            return -1;
+        }
+        //Stores and returns popped element in case needed after operation
+        int handledEmergency = emergencyQueue.front();
+        emergencyQueue.pop();
+        return handledEmergency;
+    };
 
     void bookAppointment(
         int doctorId,
@@ -327,10 +336,16 @@ public:
     // Priority Emergency
     // ===================================================== //
 
-    void addPriorityEmergency(
-        int patientId,
-        int severity
-    );
+    void addPriorityEmergency(int patientId, int severity){
+        //Make sure the patient exists in records and that the severity level is bounded between 1 and 5 as planned
+        if(findPatient(patientId) && severity <= 5 && severity >= 1){
+            priorityEmergencyQueue.push(EmergencyCase(patientId, severity));
+        }
+        else{
+            cout << "Error adding patient to priorityEmergencyQueue!" << endl;
+            return;
+        }
+    }
 
 
     // =====================================================
@@ -338,7 +353,17 @@ public:
     // Handle Priority Emergency
     // ===================================================== //
 
-    int handlePriorityEmergency();
+    int handlePriorityEmergency(){
+        if(priorityEmergencyQueue.empty()){
+            cout << "No priority emergencies." << endl;
+            return -1;
+        }
+        //Create a copy of object so we can pop and still return info from it
+        EmergencyCase temp = priorityEmergencyQueue.top();
+        priorityEmergencyQueue.pop();
+        cout << "Handling patient " << temp.getPatientId() << " with severity : " << temp.getSeverity() << endl;
+        return temp.getPatientId();
+    }
 
 
     // =====================================================
