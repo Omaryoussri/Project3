@@ -49,6 +49,7 @@ public:
 };
 
 
+
 // ========== PATIENT CLASS ========== //
 class Patient {
 private:
@@ -77,12 +78,58 @@ public:
     void admitPatient(RoomType type);
     void dischargePatient();
 
-    void addMedicalRecord(string record);
+    void addMedicalRecord(string record)
+	{
+		medicalHistory.push(record);
+	}
 
-    void requestTest(string testName);
-    string performTest();
+    void requestTest(string testName)
+	{
+		// Add a test to the back of the queue
+		testQueue.push(testName);
 
-    void displayHistory();
+		// Add an event to the medical history
+		addMedicalRecord("Test requested: " + testName);
+	}
+	
+    string performTest()
+	{
+		// Check if there are no pending tests
+		if (testQueue.empty())
+		{
+			return "No tests pending";
+		}
+
+		// Get the first requested test
+		string testName = testQueue.front();
+
+		// Remove from the queue
+		testQueue.pop();
+
+		// Record the performed test
+		addMedicalRecord("Test performed: " + testName);
+
+		// Each performed test costs $300
+		addBill(300);
+
+		// Return the name of the performed test
+		return testName;
+	}
+
+    void displayHistory()
+	{
+		cout << "Medical History for " << name << " (ID: " << id << "):" << endl;
+
+		// Make copy without popping the original stack
+		stack<string> temp = medicalHistory;
+
+		// LIFO Stack
+		while (!temp.empty())
+		{
+			cout << "- " << temp.top() << endl;
+			temp.pop();
+		}
+	}
 
     int getId();
     string getName();
@@ -93,11 +140,50 @@ public:
     // ========== NEW FEATURES ========== //
 
     // Medical Tests
-    void displayPendingTests();
+    void displayPendingTests()
+	{
+		cout << "Pending Tests:" << endl;
+
+		// Make a copy to not remove them from the original queue
+		queue<string> temp = testQueue;
+
+		// FIFO Queue
+		while (!temp.empty())
+		{
+			cout << "- " << temp.front() << endl;
+			temp.pop();
+		}
+	}
 
     // Prescriptions
-    void addPrescription(string medicine);
-    void displayPrescriptions();
+    void addPrescription(string medicine)
+	{
+		// Add the medicine to prescriptions vector
+		prescriptions.push_back(medicine);
+
+		// Record prescription in the medical history
+		addMedicalRecord("Prescription added: " + medicine);
+
+		// Each prescription costs $100
+		addBill(100);
+	}
+	
+    void displayPrescriptions()
+	{
+		if (prescriptions.empty())
+		{
+			cout << "No prescriptions found." << endl;
+			return;
+		}
+
+		cout << "Prescriptions:" << endl;
+
+		// Display medicines ordered by when they are added
+		for (const string& medicine : prescriptions)
+		{
+			cout << "- " << medicine << endl;
+		}
+	}
 
     // Billing
     void addBill(double amount);
@@ -695,6 +781,7 @@ public:
         cout << "=========================================\n";
     }
 };
+
 
 
 // ========== MAIN PROGRAM ========== //
