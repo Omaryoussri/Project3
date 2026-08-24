@@ -236,7 +236,22 @@ public:
         return name;
     }
     string getDepartment(){
-        return department+"";
+        switch(department) {
+        case CARDIOLOGY: 
+            return "Cardiology";
+        case NEUROLOGY: 
+            return "Neurology";
+        case ORTHOPEDICS: 
+            return "Orthopedics";
+        case PEDIATRICS: 
+            return "Pediatrics";
+        case EMERGENCY: 
+            return "Emergency";
+        case GENERAL: 
+            return "General";
+        default: 
+            return "Unknown";
+    }
     }
 
 
