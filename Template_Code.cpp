@@ -397,21 +397,20 @@ public:
 
             if(isRoomAvailable(type)){
                 patientPtr->admitPatient(type);
-                // // decrement room count based on type?
-                // switch(type){
-                //     case GENERAL_WARD:
-                //         generalRooms--;
-                //         break;
-                //     case ICU:
-                //         icuRooms--;
-                //         break;
-                //     case PRIVATE_ROOM:
-                //         privateRooms--;
-                //         break;
-                //     case SEMI_PRIVATE:
-                //         semiPrivateRooms--;
-                //         break;
-                // }
+                    switch(type){
+                     case GENERAL_WARD:
+                         generalRooms--;
+                         break;
+                     case ICU:
+                         icuRooms--;
+                         break;
+                     case PRIVATE_ROOM:
+                         privateRooms--;
+                         break;
+                     case SEMI_PRIVATE:
+                         semiPrivateRooms--;
+                         break;
+                }
                 return;
             }
             else{
