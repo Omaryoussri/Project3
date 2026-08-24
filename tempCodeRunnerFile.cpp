@@ -288,6 +288,7 @@ public:
     void addAppointment(int patientId){
         appointmentQueue.push(patientId);
     }
+    
     int seePatient(){
         if(appointmentQueue.empty()){
             return -1; // No patients waiting
